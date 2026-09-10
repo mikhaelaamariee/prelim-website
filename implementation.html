@@ -32,16 +32,16 @@
 
 <section class="section">
   <div class="phase-tabs">
-    <div class="phase-tab"><span class="dot" style="background:#14B8A6"></span>Phase 1 <span class="months">Months 1–3</span></div>
-    <div class="phase-tab"><span class="dot" style="background:#6366F1"></span>Phase 2 <span class="months">Months 4–6</span></div>
-    <div class="phase-tab"><span class="dot" style="background:#F97316"></span>Phase 3 <span class="months">Months 7–12</span></div>
-    <div class="phase-tab"><span class="dot" style="background:#0A1428"></span>Phase 4 <span class="months">Month 13+</span></div>
+    <div class="phase-tab" data-target="phase-1"><span class="dot" style="background:#14B8A6"></span>Phase 1 <span class="months">Months 1–3</span></div>
+    <div class="phase-tab" data-target="phase-2"><span class="dot" style="background:#6366F1"></span>Phase 2 <span class="months">Months 4–6</span></div>
+    <div class="phase-tab" data-target="phase-3"><span class="dot" style="background:#F97316"></span>Phase 3 <span class="months">Months 7–12</span></div>
+    <div class="phase-tab" data-target="phase-4"><span class="dot" style="background:#0A1428"></span>Phase 4 <span class="months">Month 13+</span></div>
   </div>
 
   <div class="timeline">
     <div class="timeline-line"><div class="timeline-line-fill"></div></div>
 
-    <div class="phase-block">
+    <div class="phase-block" id="phase-1">
       <div class="phase-circle p1">1</div>
       <div class="phase-card p1">
         <div class="phase-title-row"><h3>Phase 1: Institutional Audit</h3><span class="phase-badge">Months 1–3</span></div>
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="phase-block">
+    <div class="phase-block" id="phase-2">
       <div class="phase-circle p2">2</div>
       <div class="phase-card p2">
         <div class="phase-title-row"><h3>Phase 2: Policy Standardization</h3><span class="phase-badge">Months 4–6</span></div>
@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <div class="phase-block">
+    <div class="phase-block" id="phase-3">
       <div class="phase-circle p3">3</div>
       <div class="phase-card p3">
         <div class="phase-title-row"><h3>Phase 3: Vendor Accountability</h3><span class="phase-badge">Months 7–12</span></div>
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <div class="phase-block">
+    <div class="phase-block" id="phase-4">
       <div class="phase-circle p4">4</div>
       <div class="phase-card p4">
         <div class="phase-title-row"><h3>Phase 4: Ongoing Monitoring and Reporting</h3><span class="phase-badge">Month 13 onward</span></div>
@@ -123,5 +123,36 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
+  // Phase tab navigation: scroll to matching phase-block and highlight the active tab
+  (function () {
+    const tabs = document.querySelectorAll('.phase-tab');
+    const blocks = document.querySelectorAll('.phase-block');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = document.getElementById(tab.dataset.target);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tabs.forEach(tab => {
+              tab.classList.toggle('active', tab.dataset.target === id);
+            });
+          }
+        });
+      }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+      blocks.forEach(block => observer.observe(block));
+    }
+  })();
+</script>
 </body>
 </html>
